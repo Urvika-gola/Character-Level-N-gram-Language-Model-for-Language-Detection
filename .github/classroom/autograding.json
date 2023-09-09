@@ -1,0 +1,64 @@
+{
+  "tests": [
+    {
+      "name": "test_calculate_counts_unigrams",
+      "setup": "sudo -H pip3 install -qr requirements.txt",
+      "run": "python -m pytest -k test_calculate_counts_unigrams",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 1,
+      "points": 5
+    },
+    {
+      "name": "test_calculate_counts_bigrams",
+      "setup": "sudo -H pip3 install -qr requirements.txt",
+      "run": "python -m pytest -k test_calculate_counts_bigrams",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 1,
+      "points": 5
+    },
+    {
+      "name": "test_calculate_probabilities_unsmoothed",
+      "setup": "sudo -H pip3 install -qr requirements.txt",
+      "run": "python -m pytest -k test_calculate_probabilities_unsmoothed",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 1,
+      "points": 10
+    },
+    {
+      "name": "test_calculate_probabilities_smoothed",
+      "setup": "sudo -H pip3 install -qr requirements.txt",
+      "run": "python -m pytest -k test_calculate_probabilities_smoothed",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 1,
+      "points": 10
+    },
+    {
+      "name": "test_calculate_log_prob",
+      "setup": "sudo -H pip3 install -qr requirements.txt",
+      "run": "python -m pytest -k test_calculate_log_prob",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 1,
+      "points": 10
+    },
+    {
+      "name": "test_language_detector",
+      "setup": "sudo -H pip3 install -qr requirements.txt",
+      "run": "python -m pytest -k test_language_detector",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 1,
+      "points": 5
+    }
+  ]
+}
