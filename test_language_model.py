@@ -12,7 +12,8 @@ def test_calculate_counts_unigrams():
     unigrams, bigrams = language_detector.calculate_counts(TOY_FILE)
     assert unigrams['a'] == 7
     assert unigrams['w'] == 1
-
+    assert unigrams['$'] == 18
+    assert len(unigrams) == 24
 
 def test_calculate_counts_bigrams():
     unigrams, bigrams = language_detector.calculate_counts(TOY_FILE)
@@ -41,7 +42,6 @@ def test_calculate_probabilities_unsmoothed():
     assert 0.14 == pytest.approx(bigram_prob['a']['p'], abs=0.01)
     assert 0.14 == pytest.approx(bigram_prob['a']['y'], abs=0.01)
     assert 1.00 == pytest.approx(bigram_prob['w']['x'], abs=0.01)
-
     assert 0.00 == pytest.approx(bigram_prob['a']['a'], abs=0.01)
     assert 0.00 == pytest.approx(bigram_prob['w']['a'], abs=0.01)
 
@@ -61,9 +61,9 @@ def test_calculate_probabilities_smoothed():
 
 
 def test_calculate_log_prob():
-    sents_probs = [("alphabet has 26 letters", -28.55),
-                   ("this is a dummy sentence", -38.29),
-                   ("blah blah", -6.49)]
+    sents_probs = [("alphabet has 26 letters", -22.60),
+                   ("this is a dummy sentence", -32.72),
+                   ("blah blah", -14.81)]
     model = language_detector.create_model(TOY_FILE)
     for sent, prob in sents_probs:
         text = language_detector.preprocess(sent)
