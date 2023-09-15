@@ -39,9 +39,11 @@ def calculate_counts(path):
     # Store in unigrams and bigrams the counts of unigrams and bigrams in path
     for l in f.readlines():
         tokens = preprocess(l)
-        # YOUR CODE GOES HERE
-
-
+        for token in tokens:
+            for i in range(len(token)):
+                unigrams[token[i]] += 1
+                if i < len(token) - 1:
+                    bigrams[token[i]][token[i+1]] += 1
     return unigrams, bigrams
 
 
@@ -50,6 +52,17 @@ def calculate_probabilities(unigrams, bigrams, path, smoothed=False, log=False):
     # return raw probabilities by default
     # return smoothed probabilities (add-one smoothing) if smoothed is set to True
     # return log (of unsmoothed or smoothed) probabilities if log is set to True
+    V = len(unigrams)  # number of characters
+    for x in bigrams:
+        for y in bigrams[x]:
+            if smoothed and log:
+                bigram_prob[x][y] = math.log((bigrams[x][y] + 1) / (unigrams[x] + V), 10)
+            elif not smoothed and log:
+                bigram_prob[x][y] = math.log(bigrams[x][y] / unigrams[x], 10)
+            elif smoothed and not log:
+                bigram_prob[x][y] = (bigrams[x][y] + 1) / (unigrams[x] + V)
+            elif not smoothed and not log:
+                bigram_prob[x][y] = (bigrams[x][y]) / (unigrams[x])
 
     # YOUR CODE GOES HERE
     return bigram_prob
@@ -70,9 +83,21 @@ def calculate_log_prob(text, model):
     log_prob = 0
     # return the log probability of text according to model; smooth on the fly unseen bigrams (it is faster)
 
-    # YOUR CODE GOES HERE
+    v = len(unigrams)
+    for token in text:
+        for i in range(len(token) - 1):
+            x, y = token[i], token[i+1]
+            if x in bigram_prob and y in bigram_prob[x]:
+                log_prob += bigram_prob[x][y]
+            else:
+                if x not in unigrams:
+                    # this is to avoid accessing unigram[x] because it adds x in unigram and increases len of unigram
+                    # it was happening when "n" was added to dict in test case 2 before blah blah.
+                    unigram_val = 0
+                else:
+                    unigram_val = unigrams[x]
+                log_prob += math.log(1/(unigram_val + v), 10)
     return log_prob
-
 
 def predict(file, model_en, model_es):
     f = open(file, 'r')
@@ -86,10 +111,11 @@ def predict(file, model_en, model_es):
     # Figure out the language after calculating the log probabilities
     prob_en = calculate_log_prob(text, model_en)
     prob_es = calculate_log_prob(text, model_es)
-
-    lang = "unk"
     # YOUR CODE GOES HERE
-
+    if prob_en >= prob_es:
+        return "en"
+    else:
+        return "es"
     return lang
 
 
